@@ -1,0 +1,29 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: stock-management-db
+    environment:
+      POSTGRES_DB: stock_management
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+    ports:
+      - '5433:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - stock-management-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: stock-management-redis
+    ports:
+      - '6379:6379'
+    networks:
+      - stock-management-network
+
+volumes:
+  postgres_data:
+
+networks:
+  stock-management-network:
+    driver: bridge
