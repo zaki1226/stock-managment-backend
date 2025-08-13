@@ -57,14 +57,14 @@ let AuthService = class AuthService {
     async login(loginDto) {
         const user = await this.usersService.findByEmail(loginDto.email);
         if (!user) {
-            throw new common_1.UnauthorizedException('Invalid credentials');
+            throw new common_1.UnauthorizedException('Invalid credentials, please check your email');
         }
         const isPasswordValid = await bcrypt.compare(loginDto.password, user.password);
         if (!isPasswordValid) {
-            throw new common_1.UnauthorizedException('Invalid credentials');
+            throw new common_1.UnauthorizedException('Invalid credentials, please check your password');
         }
         if (!user.isActive) {
-            throw new common_1.UnauthorizedException('Account is deactivated');
+            throw new common_1.UnauthorizedException('Account is deactivated, please contact the administrators');
         }
         const permissions = await this.usersService.getUserPermissions(user.id);
         const roles = user.userRoles.map((ur) => ur.role.name);

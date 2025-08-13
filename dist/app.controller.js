@@ -12,13 +12,35 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppController = void 0;
 const common_1 = require("@nestjs/common");
 const app_service_1 = require("./app.service");
+const users_service_1 = require("./modules/users/users.service");
+const roles_service_1 = require("./modules/roles/roles.service");
+const permissions_service_1 = require("./modules/permissions/permissions.service");
 let AppController = class AppController {
     appService;
-    constructor(appService) {
+    usersService;
+    rolesService;
+    permissionsService;
+    constructor(appService, usersService, rolesService, permissionsService) {
         this.appService = appService;
+        this.usersService = usersService;
+        this.rolesService = rolesService;
+        this.permissionsService = permissionsService;
     }
     getHello() {
         return this.appService.getHello();
+    }
+    async getDashboardStats() {
+        const [users, roles, permissions] = await Promise.all([
+            this.usersService.findAll(),
+            this.rolesService.findAll(),
+            this.permissionsService.findAll(),
+        ]);
+        return {
+            totalUsers: users.length,
+            activeRoles: roles.length,
+            permissions: permissions.length,
+            stockItems: 0,
+        };
     }
 };
 exports.AppController = AppController;
@@ -28,8 +50,17 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", String)
 ], AppController.prototype, "getHello", null);
+__decorate([
+    (0, common_1.Get)('dashboard/stats'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], AppController.prototype, "getDashboardStats", null);
 exports.AppController = AppController = __decorate([
     (0, common_1.Controller)(),
-    __metadata("design:paramtypes", [app_service_1.AppService])
+    __metadata("design:paramtypes", [app_service_1.AppService,
+        users_service_1.UsersService,
+        roles_service_1.RolesService,
+        permissions_service_1.PermissionsService])
 ], AppController);
 //# sourceMappingURL=app.controller.js.map

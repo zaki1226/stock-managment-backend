@@ -15,7 +15,9 @@ export class AuthService {
     const user = await this.usersService.findByEmail(loginDto.email);
 
     if (!user) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw new UnauthorizedException(
+        'Invalid credentials, please check your email',
+      );
     }
 
     const isPasswordValid = await bcrypt.compare(
@@ -24,11 +26,15 @@ export class AuthService {
     );
 
     if (!isPasswordValid) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw new UnauthorizedException(
+        'Invalid credentials, please check your password',
+      );
     }
 
     if (!user.isActive) {
-      throw new UnauthorizedException('Account is deactivated');
+      throw new UnauthorizedException(
+        'Account is deactivated, please contact the administrators',
+      );
     }
 
     const permissions = await this.usersService.getUserPermissions(user.id);
