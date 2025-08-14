@@ -11,9 +11,25 @@ import { UserRole } from '../../entities/user-role.entity';
 import { Role } from '../../entities/role.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
+  async changePassword(id: string, changePasswordDto: ChangePasswordDto): Promise<{ message: string }> {
+    const { oldPassword, newPassword } = changePasswordDto;
+    const user = await this.usersRepository.findOne({ where: { id }, select: ['id', 'password'] });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!isMatch) {
+      throw new BadRequestException('Old password is incorrect');
+    }
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await this.usersRepository.update(id, { password: hashedPassword });
+    return { message: 'Password changed successfully' };
+  }
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,

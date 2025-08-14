@@ -4,10 +4,14 @@ import { UserRole } from '../../entities/user-role.entity';
 import { Role } from '../../entities/role.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 export declare class UsersService {
     private usersRepository;
     private userRolesRepository;
     private rolesRepository;
+    changePassword(id: string, changePasswordDto: ChangePasswordDto): Promise<{
+        message: string;
+    }>;
     constructor(usersRepository: Repository<User>, userRolesRepository: Repository<UserRole>, rolesRepository: Repository<Role>);
     create(createUserDto: CreateUserDto): Promise<User>;
     findAll(): Promise<User[]>;
