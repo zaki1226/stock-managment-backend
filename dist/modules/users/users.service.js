@@ -57,6 +57,9 @@ let UsersService = class UsersService {
     usersRepository;
     userRolesRepository;
     rolesRepository;
+    async findOneByResetToken(token) {
+        return await this.usersRepository.findOne({ where: { resetPasswordToken: token } });
+    }
     async changePassword(id, changePasswordDto) {
         const { oldPassword, newPassword } = changePasswordDto;
         const user = await this.usersRepository.findOne({ where: { id }, select: ['id', 'password'] });
@@ -128,6 +131,9 @@ let UsersService = class UsersService {
     }
     async update(id, updateUserDto) {
         const { roleIds, ...updateData } = updateUserDto;
+        if ('userRoles' in updateData) {
+            delete updateData.userRoles;
+        }
         await this.findOne(id);
         if (updateData.phoneNumber) {
             const existingUser = await this.usersRepository.findOne({

@@ -47,6 +47,8 @@ const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 const users_service_1 = require("../users/users.service");
 const bcrypt = __importStar(require("bcrypt"));
+const crypto = __importStar(require("crypto"));
+const nodemailer = __importStar(require("nodemailer"));
 let AuthService = class AuthService {
     usersService;
     jwtService;
@@ -90,6 +92,47 @@ let AuthService = class AuthService {
     }
     async validateUser(payload) {
         return await this.usersService.findOne(payload.sub);
+    }
+    async forgotPassword(dto) {
+        const user = await this.usersService.findByEmail(dto.email);
+        if (!user) {
+            return { message: 'If your email exists, a reset link has been sent.' };
+        }
+        const token = crypto.randomBytes(32).toString('hex');
+        user.resetPasswordToken = token;
+        user.resetPasswordExpires = new Date(Date.now() + 60 * 60 * 1000);
+        await this.usersService.update(user.id, user);
+        const resetUrl = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/reset-password?token=${token}`;
+        const transporter = nodemailer.createTransport({
+            host: process.env.SMTP_HOST,
+            port: Number(process.env.SMTP_PORT),
+            secure: false,
+            auth: {
+                user: process.env.SMTP_USER,
+                pass: process.env.SMTP_PASS,
+            },
+        });
+        await transporter.sendMail({
+            from: process.env.SMTP_FROM || 'noreply@stock.com',
+            to: user.email,
+            subject: 'Password Reset Request',
+            html: `<p>You requested a password reset. Click <a href="${resetUrl}">here</a> to reset your password. This link expires in 1 hour.</p>`,
+        });
+        return { message: 'If your email exists, a reset link has been sent.' };
+    }
+    async resetPassword(dto) {
+        const user = await this.usersService.findOneByResetToken(dto.token);
+        if (!user || !user.resetPasswordToken || user.resetPasswordToken !== dto.token) {
+            throw new common_1.BadRequestException('Invalid or expired token');
+        }
+        if (!user.resetPasswordExpires || user.resetPasswordExpires < new Date()) {
+            throw new common_1.BadRequestException('Token expired');
+        }
+        user.password = dto.newPassword;
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpires = undefined;
+        await this.usersService.update(user.id, user);
+        return { message: 'Password has been reset successfully.' };
     }
 };
 exports.AuthService = AuthService;

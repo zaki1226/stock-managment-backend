@@ -9,6 +9,7 @@ export declare class UsersService {
     private usersRepository;
     private userRolesRepository;
     private rolesRepository;
+    findOneByResetToken(token: string): Promise<User | null>;
     changePassword(id: string, changePasswordDto: ChangePasswordDto): Promise<{
         message: string;
     }>;

@@ -8,6 +8,8 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { UsersService } from '../users/users.service';
 import { Public } from './decorators/public.decorator';
@@ -37,5 +39,16 @@ export class AuthController {
   @Get('profile')
   async getProfile(@CurrentUser() user: any) {
     return this.usersService.findOne(user.userId);
+  }
+  @Public()
+  @Post('forgot-password')
+  async forgotPassword(@Body(ValidationPipe) dto: ForgotPasswordDto) {
+    return this.authService.forgotPassword(dto);
+  }
+
+  @Public()
+  @Post('reset-password')
+  async resetPassword(@Body(ValidationPipe) dto: ResetPasswordDto) {
+    return this.authService.resetPassword(dto);
   }
 }

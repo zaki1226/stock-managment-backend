@@ -12,6 +12,8 @@ export declare class User {
     userRoles: UserRole[];
     createdAt: Date;
     updatedAt: Date;
+    resetPasswordToken?: string;
+    resetPasswordExpires?: Date;
     hashPassword(): Promise<void>;
     validatePassword(password: string): Promise<boolean>;
 }

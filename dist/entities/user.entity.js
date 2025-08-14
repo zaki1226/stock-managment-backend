@@ -59,6 +59,8 @@ let User = class User {
     userRoles;
     createdAt;
     updatedAt;
+    resetPasswordToken;
+    resetPasswordExpires;
     async hashPassword() {
         if (this.password && !this.password.startsWith('$2b$')) {
             this.password = await bcrypt.hash(this.password, 10);
@@ -117,6 +119,14 @@ __decorate([
     (0, typeorm_1.UpdateDateColumn)({ name: 'updated_at' }),
     __metadata("design:type", Date)
 ], User.prototype, "updatedAt", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ name: 'reset_password_token', nullable: true }),
+    __metadata("design:type", String)
+], User.prototype, "resetPasswordToken", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ name: 'reset_password_expires', type: 'timestamp', nullable: true }),
+    __metadata("design:type", Date)
+], User.prototype, "resetPasswordExpires", void 0);
 __decorate([
     (0, typeorm_1.BeforeInsert)(),
     (0, typeorm_1.BeforeUpdate)(),

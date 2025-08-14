@@ -16,6 +16,9 @@ import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
+  async findOneByResetToken(token: string): Promise<User | null> {
+    return await this.usersRepository.findOne({ where: { resetPasswordToken: token } });
+  }
   async changePassword(id: string, changePasswordDto: ChangePasswordDto): Promise<{ message: string }> {
     const { oldPassword, newPassword } = changePasswordDto;
     const user = await this.usersRepository.findOne({ where: { id }, select: ['id', 'password'] });
@@ -105,6 +108,10 @@ export class UsersService {
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     const { roleIds, ...updateData } = updateUserDto;
+    // Remove any relations from updateData
+    if ('userRoles' in updateData) {
+      delete (updateData as any).userRoles;
+    }
 
     await this.findOne(id);
 
