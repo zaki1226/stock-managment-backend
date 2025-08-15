@@ -116,13 +116,54 @@ let AuthService = class AuthService {
             from: process.env.SMTP_FROM || 'noreply@stock.com',
             to: user.email,
             subject: 'Password Reset Request',
-            html: `<p>You requested a password reset. Click <a href="${resetUrl}">here</a> to reset your password. This link expires in 1 hour.</p>`,
+            html: `
+<html>
+  <body style="background: #f3f6fc; font-family: 'Segoe UI', Arial, sans-serif; padding: 0; margin: 0;">
+    <table width="100%" style="max-width: 500px; margin: 48px auto; background: #fff; border-radius: 18px; box-shadow: 0 4px 24px rgba(60,72,180,0.10); overflow: hidden;">
+      <tr>
+        <td style="background: linear-gradient(90deg, #0ea5e9 0%, #6366f1 100%); padding: 32px 0; text-align: center;">
+          <span style="display: inline-block; margin-bottom: 10px;">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="24" cy="24" r="24" fill="#fff"/>
+              <text x="50%" y="55%" text-anchor="middle" fill="#6366f1" font-size="22" font-family="Segoe UI, Arial, sans-serif" font-weight="bold" dy=".3em">SM</text>
+            </svg>
+          </span>
+          <h3 style="color: #fff; margin: 0; font-size: 2.2rem; font-family: 'Segoe UI', Arial, sans-serif; letter-spacing: 1px;">StockMe</h3>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding: 40px 32px 32px 32px;">
+          <h3 style="color: #222; margin-bottom: 16px; font-size: 1.35rem; font-weight: 600;">Reset Your Password</h3>
+          <p style="color: #555; font-size: 1.05rem; margin-bottom: 28px; line-height: 1.6;">
+            We received a request to reset your password for your <b>StockMe</b> account.<br>
+            Click the button below to set a new password. This link expires in <b>1 hour</b>.
+          </p>
+          <a href="${resetUrl}" style="display: inline-block; background: linear-gradient(90deg, #6366f1 0%, #0ea5e9 100%); color: #fff; font-weight: 600; padding: 16px 38px; border-radius: 10px; text-decoration: none; font-size: 1.15rem; box-shadow: 0 2px 12px rgba(99,102,241,0.13); transition: background 0.2s; margin-bottom: 18px;">
+            Reset Password
+          </a>
+          <p style="color: #888; font-size: 0.98rem; margin-top: 36px; text-align: center;">
+            If you did not request this, you can safely ignore this email.<br>
+            For help, contact <a href="mailto:support@stockme.com" style="color: #6366f1; text-decoration: underline;">support@stockme.com</a>.
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td style="background: #f3f6fc; color: #aaa; text-align: center; font-size: 0.95rem; padding: 22px;">
+          &copy; ${new Date().getFullYear()} StockMe. All rights reserved.
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
+`,
         });
         return { message: 'If your email exists, a reset link has been sent.' };
     }
     async resetPassword(dto) {
         const user = await this.usersService.findOneByResetToken(dto.token);
-        if (!user || !user.resetPasswordToken || user.resetPasswordToken !== dto.token) {
+        if (!user ||
+            !user.resetPasswordToken ||
+            user.resetPasswordToken !== dto.token) {
             throw new common_1.BadRequestException('Invalid or expired token');
         }
         if (!user.resetPasswordExpires || user.resetPasswordExpires < new Date()) {
