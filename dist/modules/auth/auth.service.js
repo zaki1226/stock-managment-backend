@@ -160,19 +160,27 @@ let AuthService = class AuthService {
         return { message: 'If your email exists, a reset link has been sent.' };
     }
     async resetPassword(dto) {
+        console.log('ResetPasswordDto token:', dto.token);
         const user = await this.usersService.findOneByResetToken(dto.token);
+        console.log('User found by token:', user?.id, user?.resetPasswordToken);
         if (!user ||
             !user.resetPasswordToken ||
             user.resetPasswordToken !== dto.token) {
+            console.log('Token mismatch or missing:', {
+                userToken: user?.resetPasswordToken,
+                dtoToken: dto.token
+            });
             throw new common_1.BadRequestException('Invalid or expired token');
         }
         if (!user.resetPasswordExpires || user.resetPasswordExpires < new Date()) {
+            console.log('Token expired:', user.resetPasswordExpires);
             throw new common_1.BadRequestException('Token expired');
         }
         user.password = dto.newPassword;
         user.resetPasswordToken = undefined;
         user.resetPasswordExpires = undefined;
         await this.usersService.update(user.id, user);
+        console.log('Password reset successful for user:', user.id);
         return { message: 'Password has been reset successfully.' };
     }
 };
