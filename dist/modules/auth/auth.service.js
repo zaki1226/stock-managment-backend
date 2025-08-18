@@ -168,7 +168,7 @@ let AuthService = class AuthService {
             user.resetPasswordToken !== dto.token) {
             console.log('Token mismatch or missing:', {
                 userToken: user?.resetPasswordToken,
-                dtoToken: dto.token
+                dtoToken: dto.token,
             });
             throw new common_1.BadRequestException('Invalid or expired token');
         }

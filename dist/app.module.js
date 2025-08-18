@@ -20,6 +20,7 @@ const auth_module_1 = require("./modules/auth/auth.module");
 const jwt_auth_guard_1 = require("./modules/auth/guards/jwt-auth.guard");
 const roles_guard_1 = require("./modules/auth/guards/roles.guard");
 const permissions_guard_1 = require("./modules/auth/guards/permissions.guard");
+const categories_module_1 = require("./modules/categories/categories.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -40,13 +41,16 @@ exports.AppModule = AppModule = __decorate([
                     password: configService.get('DB_PASSWORD'),
                     database: configService.get('DB_DATABASE'),
                     entities: [__dirname + '/**/*.entity{.ts,.js}'],
-                    synchronize: true,
+                    migrations: [__dirname + '/migrations/*{.ts,.js}'],
+                    migrationsTableName: 'migrations',
+                    synchronize: false,
                 }),
                 inject: [config_1.ConfigService],
             }),
             auth_module_1.AuthModule,
             users_module_1.UsersModule,
             roles_module_1.RolesModule,
+            categories_module_1.CategoriesModule,
             permissions_module_1.PermissionsModule,
         ],
         controllers: [app_controller_1.AppController],

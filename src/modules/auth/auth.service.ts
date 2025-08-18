@@ -157,7 +157,7 @@ export class AuthService {
     ) {
       console.log('Token mismatch or missing:', {
         userToken: user?.resetPasswordToken,
-        dtoToken: dto.token
+        dtoToken: dto.token,
       });
       throw new BadRequestException('Invalid or expired token');
     }
