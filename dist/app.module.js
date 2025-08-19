@@ -20,6 +20,7 @@ const auth_module_1 = require("./modules/auth/auth.module");
 const jwt_auth_guard_1 = require("./modules/auth/guards/jwt-auth.guard");
 const roles_guard_1 = require("./modules/auth/guards/roles.guard");
 const permissions_guard_1 = require("./modules/auth/guards/permissions.guard");
+const warehouse_module_1 = require("./modules/warehouse/warehouse.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -48,6 +49,7 @@ exports.AppModule = AppModule = __decorate([
             users_module_1.UsersModule,
             roles_module_1.RolesModule,
             permissions_module_1.PermissionsModule,
+            warehouse_module_1.WarehouseModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [

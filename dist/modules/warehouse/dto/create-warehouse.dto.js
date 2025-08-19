@@ -9,42 +9,27 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.a = void 0;
-const typeorm_1 = require("typeorm");
-let a = class a {
-    id;
+exports.CreateWarehouseDto = void 0;
+const class_validator_1 = require("class-validator");
+class CreateWarehouseDto {
     name;
+    address;
     description;
-    isActive;
-    createdAt;
-    updatedAt;
-};
-exports.a = a;
+}
+exports.CreateWarehouseDto = CreateWarehouseDto;
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], a.prototype, "id", void 0);
+], CreateWarehouseDto.prototype, "name", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ unique: true }),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], a.prototype, "name", void 0);
+], CreateWarehouseDto.prototype, "address", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ nullable: true }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], a.prototype, "description", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ default: true }),
-    __metadata("design:type", Boolean)
-], a.prototype, "isActive", void 0);
-__decorate([
-    (0, typeorm_1.CreateDateColumn)({ name: 'created_at' }),
-    __metadata("design:type", Date)
-], a.prototype, "createdAt", void 0);
-__decorate([
-    (0, typeorm_1.UpdateDateColumn)({ name: 'updated_at' }),
-    __metadata("design:type", Date)
-], a.prototype, "updatedAt", void 0);
-exports.a = a = __decorate([
-    (0, typeorm_1.Entity)('a')
-], a);
-//# sourceMappingURL=a.entity.js.map
+], CreateWarehouseDto.prototype, "description", void 0);
+//# sourceMappingURL=create-warehouse.dto.js.map

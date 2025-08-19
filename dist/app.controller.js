@@ -15,31 +15,36 @@ const app_service_1 = require("./app.service");
 const users_service_1 = require("./modules/users/users.service");
 const roles_service_1 = require("./modules/roles/roles.service");
 const permissions_service_1 = require("./modules/permissions/permissions.service");
+const warehouse_service_1 = require("./modules/warehouse/warehouse.service");
 let AppController = class AppController {
     appService;
     usersService;
     rolesService;
     permissionsService;
-    constructor(appService, usersService, rolesService, permissionsService) {
+    warehouseService;
+    constructor(appService, usersService, rolesService, permissionsService, warehouseService) {
         this.appService = appService;
         this.usersService = usersService;
         this.rolesService = rolesService;
         this.permissionsService = permissionsService;
+        this.warehouseService = warehouseService;
     }
     getHello() {
         return this.appService.getHello();
     }
     async getDashboardStats() {
-        const [users, roles, permissions] = await Promise.all([
+        const [users, roles, permissions, warehouses] = await Promise.all([
             this.usersService.findAll(),
             this.rolesService.findAll(),
             this.permissionsService.findAll(),
+            this.warehouseService.findAll(),
         ]);
         return {
             totalUsers: users.length,
             activeRoles: roles.length,
             permissions: permissions.length,
             stockItems: 0,
+            warehouses: warehouses.length,
         };
     }
 };
@@ -61,6 +66,7 @@ exports.AppController = AppController = __decorate([
     __metadata("design:paramtypes", [app_service_1.AppService,
         users_service_1.UsersService,
         roles_service_1.RolesService,
-        permissions_service_1.PermissionsService])
+        permissions_service_1.PermissionsService,
+        warehouse_service_1.WarehouseService])
 ], AppController);
 //# sourceMappingURL=app.controller.js.map

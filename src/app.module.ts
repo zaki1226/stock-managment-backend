@@ -11,6 +11,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
 import { RolesGuard } from './modules/auth/guards/roles.guard';
 import { PermissionsGuard } from './modules/auth/guards/permissions.guard';
+import { WarehouseModule } from './modules/warehouse/warehouse.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { PermissionsGuard } from './modules/auth/guards/permissions.guard';
     UsersModule,
     RolesModule,
     PermissionsModule,
+  WarehouseModule,
   ],
   controllers: [AppController],
   providers: [

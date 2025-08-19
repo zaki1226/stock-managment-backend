@@ -9,27 +9,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TestEntity = void 0;
+exports.Warehouse = void 0;
 const typeorm_1 = require("typeorm");
-let TestEntity = class TestEntity {
+let Warehouse = class Warehouse {
     id;
     name;
-    createdAt;
+    address;
+    description;
 };
-exports.TestEntity = TestEntity;
+exports.Warehouse = Warehouse;
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
-    __metadata("design:type", Number)
-], TestEntity.prototype, "id", void 0);
+    (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
+    __metadata("design:type", String)
+], Warehouse.prototype, "id", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ unique: true }),
+    __metadata("design:type", String)
+], Warehouse.prototype, "name", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], TestEntity.prototype, "name", void 0);
+], Warehouse.prototype, "address", void 0);
 __decorate([
-    (0, typeorm_1.CreateDateColumn)(),
-    __metadata("design:type", Date)
-], TestEntity.prototype, "createdAt", void 0);
-exports.TestEntity = TestEntity = __decorate([
-    (0, typeorm_1.Entity)('test_entity')
-], TestEntity);
-//# sourceMappingURL=test.entity.js.map
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Warehouse.prototype, "description", void 0);
+exports.Warehouse = Warehouse = __decorate([
+    (0, typeorm_1.Entity)()
+], Warehouse);
+//# sourceMappingURL=warehouse.entity.js.map
