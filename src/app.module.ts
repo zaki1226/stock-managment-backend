@@ -11,6 +11,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
 import { RolesGuard } from './modules/auth/guards/roles.guard';
 import { PermissionsGuard } from './modules/auth/guards/permissions.guard';
+import { CategoriesModule } from './modules/categories/categories.module';
 import { WarehouseModule } from './modules/warehouse/warehouse.module';
 
 @Module({
@@ -37,6 +38,7 @@ import { WarehouseModule } from './modules/warehouse/warehouse.module';
     UsersModule,
     RolesModule,
     PermissionsModule,
+  CategoriesModule,
   WarehouseModule,
   ],
   controllers: [AppController],
