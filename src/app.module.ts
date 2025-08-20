@@ -13,6 +13,7 @@ import { RolesGuard } from './modules/auth/guards/roles.guard';
 import { PermissionsGuard } from './modules/auth/guards/permissions.guard';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { WarehouseModule } from './modules/warehouse/warehouse.module';
+import { UnitsModule } from './modules/units/units.module';
 
 @Module({
   imports: [
@@ -38,8 +39,9 @@ import { WarehouseModule } from './modules/warehouse/warehouse.module';
     UsersModule,
     RolesModule,
     PermissionsModule,
-  CategoriesModule,
-  WarehouseModule,
+    CategoriesModule,
+    WarehouseModule,
+    UnitsModule,
   ],
   controllers: [AppController],
   providers: [
