@@ -16,28 +16,32 @@ const users_service_1 = require("./modules/users/users.service");
 const roles_service_1 = require("./modules/roles/roles.service");
 const permissions_service_1 = require("./modules/permissions/permissions.service");
 const warehouse_service_1 = require("./modules/warehouse/warehouse.service");
+const categories_service_1 = require("./modules/categories/categories.service");
 let AppController = class AppController {
     appService;
     usersService;
     rolesService;
     permissionsService;
     warehouseService;
-    constructor(appService, usersService, rolesService, permissionsService, warehouseService) {
+    categoriesService;
+    constructor(appService, usersService, rolesService, permissionsService, warehouseService, categoriesService) {
         this.appService = appService;
         this.usersService = usersService;
         this.rolesService = rolesService;
         this.permissionsService = permissionsService;
         this.warehouseService = warehouseService;
+        this.categoriesService = categoriesService;
     }
     getHello() {
         return this.appService.getHello();
     }
     async getDashboardStats() {
-        const [users, roles, permissions, warehouses] = await Promise.all([
+        const [users, roles, permissions, warehouses, categories] = await Promise.all([
             this.usersService.findAll(),
             this.rolesService.findAll(),
             this.permissionsService.findAll(),
             this.warehouseService.findAll(),
+            this.categoriesService.findAll(),
         ]);
         return {
             totalUsers: users.length,
@@ -45,6 +49,7 @@ let AppController = class AppController {
             permissions: permissions.length,
             stockItems: 0,
             warehouses: warehouses.length,
+            categories: categories.length,
         };
     }
 };
@@ -67,6 +72,7 @@ exports.AppController = AppController = __decorate([
         users_service_1.UsersService,
         roles_service_1.RolesService,
         permissions_service_1.PermissionsService,
-        warehouse_service_1.WarehouseService])
+        warehouse_service_1.WarehouseService,
+        categories_service_1.CategoriesService])
 ], AppController);
 //# sourceMappingURL=app.controller.js.map
