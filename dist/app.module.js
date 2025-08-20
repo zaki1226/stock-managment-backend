@@ -23,6 +23,7 @@ const permissions_guard_1 = require("./modules/auth/guards/permissions.guard");
 const categories_module_1 = require("./modules/categories/categories.module");
 const warehouse_module_1 = require("./modules/warehouse/warehouse.module");
 const units_module_1 = require("./modules/units/units.module");
+const products_module_1 = require("./modules/products/products.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -54,6 +55,7 @@ exports.AppModule = AppModule = __decorate([
             categories_module_1.CategoriesModule,
             warehouse_module_1.WarehouseModule,
             units_module_1.UnitsModule,
+            products_module_1.ProductsModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [

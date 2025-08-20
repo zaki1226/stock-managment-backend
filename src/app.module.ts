@@ -14,6 +14,7 @@ import { PermissionsGuard } from './modules/auth/guards/permissions.guard';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { WarehouseModule } from './modules/warehouse/warehouse.module';
 import { UnitsModule } from './modules/units/units.module';
+import { ProductsModule } from './modules/products/products.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { UnitsModule } from './modules/units/units.module';
     CategoriesModule,
     WarehouseModule,
     UnitsModule,
+    ProductsModule,
   ],
   controllers: [AppController],
   providers: [

@@ -6,6 +6,7 @@ import { PermissionsService } from './modules/permissions/permissions.service';
 import { WarehouseService } from './modules/warehouse/warehouse.service';
 import { CategoriesService } from './modules/categories/categories.service';
 import { UnitsService } from './modules/units/units.service';
+import { ProductsService } from './modules/products/products.service';
 
 @Controller()
 export class AppController {
@@ -17,6 +18,7 @@ export class AppController {
     private readonly warehouseService: WarehouseService,
     private readonly categoriesService: CategoriesService,
     private readonly unitsService: UnitsService,
+    private readonly productsService: ProductsService,
   ) {}
 
   @Get()
@@ -26,7 +28,7 @@ export class AppController {
 
   @Get('dashboard/stats')
   async getDashboardStats() {
-    const [users, roles, permissions, warehouses, categories, units] =
+    const [users, roles, permissions, warehouses, categories, units, products] =
       await Promise.all([
         this.usersService.findAll(),
         this.rolesService.findAll(),
@@ -34,6 +36,7 @@ export class AppController {
         this.warehouseService.findAll(),
         this.categoriesService.findAll(),
         this.unitsService.findAll(),
+        this.productsService.findAll(),
       ]);
     // TODO: Add stock items count when implemented
     return {
@@ -44,6 +47,7 @@ export class AppController {
       warehouses: warehouses.length,
       categories: categories.length,
       units: units.length,
+      products: products.length,
     };
   }
 }
